@@ -9,7 +9,7 @@ export class FxRate {
   quoteId: number;
 
   @Prop(Array)
-  exchangeRate: [Object];
+  exchangeRate: [];
 }
 
 export const FxRateSchema = SchemaFactory.createForClass(FxRate);
