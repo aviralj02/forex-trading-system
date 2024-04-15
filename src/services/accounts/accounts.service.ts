@@ -20,4 +20,18 @@ export class AccountsService {
       .exec();
     return updateTopUp;
   }
+
+  async fetchBalance() {
+    try {
+      const fetchedBalance = await this.accountModel.find();
+      const response = { balances: {} };
+      fetchedBalance.forEach((item) => {
+        response.balances[item.currency] = item.amount;
+      });
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
