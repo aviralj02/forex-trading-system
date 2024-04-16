@@ -46,7 +46,7 @@ $ npm run start:prod
 
 ## Features
 
-- **API Documentation:**The Forex Trading System provides comprehensive API documentation using [Swagger](https://swagger.io/). Visit the Swagger UI interface at http://localhost:3000/api to explore and interact with the available endpoints.
+- **API Documentation:** The Forex Trading System provides comprehensive API documentation using [Swagger](https://swagger.io/). Visit the Swagger UI interface at http://localhost:3000/api to explore and interact with the available endpoints.
 
 - The system fetches live FX conversion rates from [alphavantage.co](<(https://www.alphavantage.co)>) and stores them in memory.
   Each rate is valid for 30 seconds.
