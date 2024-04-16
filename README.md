@@ -73,11 +73,6 @@ $ npm run start:prod
 {"quoteId": "12345", expiry_at: "12345"}
 ```
 
-**NOTE: Considering AlphaVantage API does not provide an endpoint to have all exchange rate in a single fetch, this project only fetches the 3 most relevant exchange rates:**
-**1. USD/JPY**
-**2. USD/INR**
-**3. USD/EUR**
-
 4. FX Conversion API
 
 - Endpoint: POST /fx-conversion
@@ -102,6 +97,14 @@ $ npm run start:prod
 ```bash
 { "balances": { "USD": 1000, "EUR": 500, "GBP": 300 } }
 ```
+
+**NOTE: Considering AlphaVantage API does not provide an endpoint to have all exchange rate in a single fetch, this project only fetches the 3 most relevant exchange rates:**
+
+**1. USD/JPY**
+
+**2. USD/INR**
+
+**3. USD/EUR**
 
 ## API Documentation
 
