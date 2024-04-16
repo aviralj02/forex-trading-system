@@ -1,38 +1,37 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 💹 Forex Trading System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- The system offers users to perform essential functions such as topping up their accounts, accessing live FX conversion rates, executing currency conversions, and reviewing account balances.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🧑‍💻 Tech Stack
 
-## Description
+- [![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+
+* [![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
 ## Installation
+
+- Clone the repository
+
+```bash
+$ git clone https://github.com/aviralj02/forex-trading-system.git
+```
+
+- Install NPM Packages
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+- Create a .env file and fill up the following details. You may also refer to [.env.example](./.env.example)
+
+```
+MONGO_URL=
+ALPHAVANTAGE_API_KEY=
+```
+
+- Running the app
 
 ```bash
 # development
@@ -45,29 +44,65 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Routes and Description
+
+1. Top Up Account API
+
+- Endpoint: POST /accounts/topup
+- Request body:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+{ "currency": "USD", "amount": 100 }
 ```
 
-## Support
+- Description: This API allows users to top up their account with a specified amount in a given currency.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+2. FX Rate API
 
-## Stay in touch
+- Endpoint: GET /fx-rates
+- Description: The system fetches live FX conversion rates from [alphavantage.co](<(https://www.alphavantage.co)>) and stores
+  them in memory.
+- Each rate is valid for 30 seconds.
+- This API fetches live FX conversion rates from memory
+  stored in STEP 1.
+- The system generates a quoteId and sends it in the response to the
+  client.
+- Response:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+{"quoteId": "12345", expiry_at: "12345"}
+```
 
-## License
+**NOTE: Considering AlphaVantage API does not provide an endpoint to have all exchange rate in a single fetch, this project only fetches the 3 most relevant exchange rates:**
+**1. USD/JPY**
+**2. USD/INR**
+**3. USD/EUR**
 
-Nest is [MIT licensed](LICENSE).
+4. FX Conversion API
+
+- Endpoint: POST /fx-conversion
+- Request body: { "quoteId": "12345", "fromCurrency": "USD",
+  "toCurrency": "EUR", "amount": 100 }
+- Description: This API performs an FX conversion using the provided
+  quoteId and converts the specified amount from one currency to
+  another.
+- Response:
+
+```bash
+{ "convertedAmount": 90.53, "currency": "EUR"}
+```
+
+4. Balance API
+
+- Endpoint: GET /accounts/balance
+- Description: This API retrieves the balances in all currencies for the
+  user's account.
+- Response:
+
+```bash
+{ "balances": { "USD": 1000, "EUR": 500, "GBP": 300 } }
+```
+
+## API Documentation
+
+The Forex Trading System provides comprehensive API documentation using [Swagger](https://swagger.io/). Visit the Swagger UI interface at http://localhost:3000/api to explore and interact with the available endpoints.
