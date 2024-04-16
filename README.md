@@ -44,6 +44,34 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Features
+
+- **API Documentation:**The Forex Trading System provides comprehensive API documentation using [Swagger](https://swagger.io/). Visit the Swagger UI interface at http://localhost:3000/api to explore and interact with the available endpoints.
+
+- The system fetches live FX conversion rates from [alphavantage.co](<(https://www.alphavantage.co)>) and stores them in memory.
+  Each rate is valid for 30 seconds.
+
+- The API is rate limited.
+
+  ```bash
+  {
+    ttl: 4000,
+    limit: 2
+  }
+  ```
+
+  This means no more than 2 calls in 4 seconds for all API routes.
+
+<br />
+
+**NOTE: Considering AlphaVantage API does not provide an endpoint to have all exchange rate in a single fetch, this project only fetches the 3 most relevant exchange rates:**
+
+**1. USD/JPY**
+
+**2. USD/INR**
+
+**3. USD/EUR**
+
 ## Routes and Description
 
 1. Top Up Account API
@@ -60,8 +88,7 @@ $ npm run start:prod
 2. FX Rate API
 
 - Endpoint: GET /fx-rates
-- Description: The system fetches live FX conversion rates from [alphavantage.co](<(https://www.alphavantage.co)>) and stores
-  them in memory.
+- Description: The system fetches live FX conversion rates from [alphavantage.co](<(https://www.alphavantage.co)>) and stores them in memory.
 - Each rate is valid for 30 seconds.
 - This API fetches live FX conversion rates from memory
   stored in STEP 1.
@@ -97,15 +124,3 @@ $ npm run start:prod
 ```bash
 { "balances": { "USD": 1000, "EUR": 500, "GBP": 300 } }
 ```
-
-**NOTE: Considering AlphaVantage API does not provide an endpoint to have all exchange rate in a single fetch, this project only fetches the 3 most relevant exchange rates:**
-
-**1. USD/JPY**
-
-**2. USD/INR**
-
-**3. USD/EUR**
-
-## API Documentation
-
-The Forex Trading System provides comprehensive API documentation using [Swagger](https://swagger.io/). Visit the Swagger UI interface at http://localhost:3000/api to explore and interact with the available endpoints.
