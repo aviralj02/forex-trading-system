@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { AccountDocument } from 'src/schemas/account.schema';
 import { FxLiveDocument } from 'src/schemas/fx-rates-live.schema';
 import { FxRateDocument } from 'src/schemas/fx-rates.schema';
 
@@ -14,6 +15,7 @@ export class FxRatesService {
   constructor(
     @InjectModel('FxRate') private FxRateModel: Model<FxRateDocument>,
     @InjectModel('FxLive') private FxLiveModel: Model<FxLiveDocument>,
+    @InjectModel('Account') private accountModel: Model<AccountDocument>,
   ) {}
 
   async generateQuoteId(): Promise<number> {
@@ -58,6 +60,18 @@ export class FxRatesService {
       if (!exchangeRateObject) return null;
 
       const convertedAmount = exchangeRateObject.rate * amount;
+
+      await this.accountModel.findOneAndUpdate(
+        { currency: toCurrency },
+        { $inc: { amount: convertedAmount } },
+        { upsert: true, new: true },
+      );
+
+      await this.accountModel.findOneAndUpdate(
+        { currency: fromCurrency },
+        { $inc: { amount: -amount } },
+        { upsert: true, new: true },
+      );
       return convertedAmount;
     } catch (error) {
       console.log('Error performing conversion. Error: ' + error);
